@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status do Convidado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-image: url('teste.png'); /* URL da imagem de fundo */
+            background-size: cover; /* Faz com que a imagem cubra todo o fundo */
+            background-position: center; /* Centraliza a imagem */
+            background-repeat: no-repeat; /* Impede que a imagem se repita */
+        }
+
+        h1 {
+            color: #ffffff;
+            margin-top: 20px;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-top: 50px;
+            /* Ajuste o espaço acima conforme necessário */
+        }
+
+        .logo-container img {
+            width: 150px; /* Ajuste o tamanho da logo */
+            height: auto;
+            border-radius: 10px;
+            border: none; /* Remova qualquer borda extra, se houver */
+        }
+
+        .image-container img {
+            width: 40%; /* Ajusta a largura da imagem */
+            height: auto; /* Mantém a proporção da imagem */
+            border-radius: 20px; /* Ajusta a borda da imagem (se necessário) */
+            border: none; /* Remove qualquer borda extra */
+            background-color: transparent; /* Remove fundo branco, caso tenha */
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #044f2e; /* Cor inicial: verde */
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #833be2;
+        }
+
+        button:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+
+        #statusMessage {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #ffffff;
+        }
+
+        .image-container {
+            margin-top: 20px;
+        }
+
+        .purple-btn {
+            background-color: #6f42c1;
+        }
+
+        .purple-btn:hover {
+            background-color: #5a2e9e;
+        }
+
+        img {
+            width: 30%; /* Ajuste a largura para reduzir o tamanho */
+            height: auto; /* Mantém a proporção da imagem */
+            border-radius: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Contêiner da logo -->
+        <div class="logo-container">
+            <img src="logo2.png" alt="Logo"> <!-- Substitua 'logo2.png' pelo caminho da sua logo -->
+        </div>
+
+        <h1>Convidado: Ana Julia</h1>
+
+        <!-- Adicionando a imagem enviada como fundo no contêiner -->
+        <div class="background-image-container"></div>
+
+        <!-- Imagem fixa dentro do quadrado -->
+        <div class="image-container">
+            <img src="" alt="Imagem do Convidado">
+        </div>
+
+        <button id="approveButton" class="blue-btn">Aprovar</button>
+        <p id="statusMessage"></p>
+    </div>
+
+    <script>
+        const button = document.getElementById('approveButton');
+        const statusMessage = document.getElementById('statusMessage');
+
+        // URL da API do SheetDB
+        const apiUrl = "https://sheetdb.io/api/v1/8yun7tjcum5lq";
+
+        button.addEventListener('click', async () => {
+            const guestName = "Ana Julia"; // Nome do convidado que queremos atualizar
+            const guestId = 21; // ID do convidado Taynara
+
+            try {
+                // Exibindo mensagem de carregamento
+                statusMessage.textContent = "Processando...";
+
+                // Atualizando o status do convidado com ID 4
+                const updateResponse = await fetch(`${apiUrl}/ID/${guestId}`, {
+                    method: "PUT", // Método PUT para atualizar os dados
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        Status: "Aprovado"  // Novo status
+                    }),
+                });
+
+                if (updateResponse.ok) {
+                    statusMessage.textContent = "Status atualizado para 'Aprovado'!";
+                    button.disabled = true;
+                } else {
+                    statusMessage.textContent = "Erro ao atualizar o status.";
+                }
+            } catch (error) {
+                statusMessage.textContent = "Erro ao conectar à API. Confira as configurações.";
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>
